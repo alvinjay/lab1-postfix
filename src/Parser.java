@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -5,11 +6,13 @@ import java.util.Stack;
  * Created by alvinjay on 2/5/15.
  */
 public class Parser {
+    Constants constants = new Constants();
 
+    private ArrayList<String> outputLines;
     // pre defined operators
-    String OPERATORS;
+    private String OPERATORS;
     // operator weights
-    HashMap<Character, Integer> OPERATOR_WEIGHTS;
+    private HashMap<Character, Integer> OPERATOR_WEIGHTS;
     // stacks for operators from inputs
     private Stack ops = new Stack();
     // postfix of input in stack form
@@ -17,8 +20,8 @@ public class Parser {
     // postfix of input in reverse stack form (for easier parsing in computing phase)
     private Stack postfix = new Stack();
 
-    public Parser() {
-        Constants constants = new Constants();
+    public Parser(ArrayList<String> outputLines) {
+        this.outputLines = outputLines;
         this.OPERATORS = constants.getOperators();
         this.OPERATOR_WEIGHTS = constants.getOperatorWeights();
     }
