@@ -5,20 +5,24 @@ import java.util.Stack;
 /**
  * Created by alvinjay on 2/5/15.
  */
-public class Parser {
+public class Parser implements Generator {
     Constants constants = new Constants();
 
     private ArrayList<String> outputLines;
+
     // pre defined operators
     private String OPERATORS;
     // operator weights
     private HashMap<Character, Integer> OPERATOR_WEIGHTS;
+
     // stacks for operators from inputs
     private Stack ops = new Stack();
     // postfix of input in stack form
     private Stack output = new Stack();
     // postfix of input in reverse stack form (for easier parsing in computing phase)
     private Stack postfix = new Stack();
+
+    private final String preOutputLine = "Postfix Form: ";
 
     public Parser(ArrayList<String> outputLines) {
         this.outputLines = outputLines;
@@ -31,7 +35,10 @@ public class Parser {
      * @param line - input line currently being processed
      * @return
      */
-    public Stack convertToPostfix(String line) {
+    public Stack convertToPostfix(String line, int index) {
+        //remove spaces in between characters
+        line = line.replace(" ", "");
+
         // reset for new input line
         postfix.clear();
         // holds operands ONLY
@@ -74,10 +81,12 @@ public class Parser {
             output.push(ops.pop());
         }
 
-        // make reverse form of postfix form
+        // make reverse form of postfix string
         while(!output.empty()) {
             postfix.push(output.pop());
         }
+
+        generateOutputLine(convertStackToString(postfix), index);
 
         return postfix;
     }
@@ -98,7 +107,7 @@ public class Parser {
      * @return
      */
     private void processOperators(char a, char b) {
-        System.out.println(a + " " + b);
+//        System.out.println(a + " " + b);
         if (OPERATOR_WEIGHTS.get(((Object) b)) <= OPERATOR_WEIGHTS.get(((Object) a))) {
             output.push(a);
             ops.pop();
@@ -108,7 +117,21 @@ public class Parser {
         }
     }
 
-    //convertToPostfix
-    //isExpression
-    //isOperator
+    private String convertStackToString(Stack a) {
+        String postfixString = "";
+        int size = a.size();
+
+        for (int i = 0; i < size; i++) {
+            postfixString += a.pop().toString() + " ";
+        }
+
+        return postfixString;
+    }
+
+    @Override
+    public void generateOutputLine(String postfix, int index) {
+        String indexOutputLine = outputLines.get(index);
+        indexOutputLine += preOutputLine + postfix + "\n";
+        outputLines.set(index, indexOutputLine);
+    }
 }
