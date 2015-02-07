@@ -6,7 +6,10 @@ import java.util.Stack;
  * Created by alvinjay on 2/5/15.
  */
 public class Main implements Generator{
+
+    // acts as symbol table in the compilation process :)
     private HashMap<String, Integer> variables = new HashMap<String, Integer>();
+    // arraylist of output lines for each input line
     private ArrayList<String> outputLines = new ArrayList<String>();
 
     Parser parser = new Parser(outputLines);
@@ -37,7 +40,9 @@ public class Main implements Generator{
 
     @Override
     public void generateOutputLine(String given, int index) {
+        // include pre output line words for readability
         String indexOutputLine = preOutputLine + (index + 1) + ": " + given + "\n";
+        // add to arraylist of output lines
         outputLines.add(index, indexOutputLine);
     }
 }

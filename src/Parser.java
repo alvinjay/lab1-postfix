@@ -41,9 +41,13 @@ public class Parser implements Generator {
 
         // reset for new input line
         postfix.clear();
-        // holds operands ONLY
-        // NOTE: of type String because of possibility of 2 or more digit numbers
+
+        /**
+         * holds operands ONLY
+         * NOTE: of type String because of possibility of 2 or more digit numbers
+         */
         String operand = "";
+
         // process each character in the input line
         for (int i = 0; i < line.length(); i++) {
             // will hold the current character being processed for the input line
@@ -102,8 +106,8 @@ public class Parser implements Generator {
 
     /**
      * Returns which operator has greater value
-     * @param a
-     * @param b
+     * @param a - operator from stack
+     * @param b - current operator from input line
      * @return
      */
     private void processOperators(char a, char b) {
@@ -117,6 +121,12 @@ public class Parser implements Generator {
         }
     }
 
+    /**
+     * Converts a stack to string form
+     * NOTE: will give a reversed stack string as result since pop() is used
+     * @param a
+     * @return
+     */
     private String convertStackToString(Stack a) {
         String postfixString = "";
         int size = a.size();
@@ -130,8 +140,11 @@ public class Parser implements Generator {
 
     @Override
     public void generateOutputLine(String postfix, int index) {
+        // retrieve the existing output line for the index
         String indexOutputLine = outputLines.get(index);
+        // append the postfix string
         indexOutputLine += preOutputLine + postfix + "\n";
+        // set the new value to the index of the output line
         outputLines.set(index, indexOutputLine);
     }
 }
