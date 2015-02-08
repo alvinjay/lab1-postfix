@@ -90,6 +90,7 @@ public class FileHelper implements Generator {
             String line = input.nextLine();
             generateOutputLine(line, i);
             Stack temps = parser.convertToPostfix(line, i);
+            //TODO okay na gab. haha
             comp.computeValue(temps);
         }
 

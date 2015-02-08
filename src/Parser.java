@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -20,7 +21,7 @@ public class Parser implements Generator {
     // postfix of input in stack form
     private Stack output = new Stack();
     // postfix of input in reverse stack form (for easier parsing in computing phase)
-    private Stack postfix = new Stack();
+    private ArrayList<String> postfix = new ArrayList<String>();
 
     private final String preOutputLine = "Postfix Form: ";
 
@@ -87,12 +88,12 @@ public class Parser implements Generator {
 
         // make reverse form of postfix string
         while(!output.empty()) {
-            postfix.push(output.pop());
+            postfix.add(output.pop().toString());
         }
 
-        generateOutputLine(convertStackToString(postfix), index);
+        generateOutputLine(convertArrayListToString(postfix), index);
 
-        return postfix;
+        return convertArrayListToStack(postfix);
     }
 
     /**
@@ -122,20 +123,32 @@ public class Parser implements Generator {
     }
 
     /**
-     * Converts a stack to string form
-     * NOTE: will give a reversed stack string as result since pop() is used
+     * Converts an array list to string form
+     * NOTE: will give a reversed string as result
      * @param a
      * @return
      */
-    private String convertStackToString(Stack a) {
+    private String convertArrayListToString(ArrayList a) {
         String postfixString = "";
-        int size = a.size();
 
-        for (int i = 0; i < size; i++) {
-            postfixString += a.pop().toString() + " ";
+        for (int i = a.size() - 1; i >= 0; i--) {
+            postfixString += a.get(i) + " ";
         }
 
         return postfixString;
+    }
+
+    /**
+     * Converts the given array list to stack form
+     * @param a
+     * @return
+     */
+    private Stack convertArrayListToStack (ArrayList<String> a) {
+        Stack temp = new Stack();
+        for (int i = 0; i < a.size(); i++) {
+            temp.push(a.get(i));
+        }
+        return temp;
     }
 
     @Override
