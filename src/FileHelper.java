@@ -22,13 +22,14 @@ public class FileHelper implements Generator {
     // current project directory path
     private final String projectDir = System.getProperty("user.dir");
 
+    private ArrayList<String> variableNames = new ArrayList<String>();
     // acts as symbol table in the compilation process :)
     private HashMap<String, Integer> variables = new HashMap<String, Integer>();
     // arraylist of output lines for each input line
     private ArrayList<String> outputLines = new ArrayList<String>();
 
     private Parser parser = new Parser(outputLines);
-    private Computer comp = new Computer(variables, outputLines);
+    private Computer comp = new Computer(variableNames, variables, outputLines);
 
     private final String preOutputLine = "Line ";
 
@@ -90,8 +91,14 @@ public class FileHelper implements Generator {
             String line = input.nextLine();
             generateOutputLine(line, i);
             Stack temps = parser.convertToPostfix(line, i);
-            //TODO okay na gab. haha
-            comp.computeValue(temps);
+            comp.computeValue(temps, i);
+//            int size = temps.size();
+//            for (int j = 0; j < size; j++) {
+//                System.out.println(temps.pop());
+//            }
+//            for (int j = 0; j < variableNames.size(); j++) {
+//                System.out.println(variables.get(variableNames.get(j)));
+//            }
         }
 
         gui.listModel.clear();
@@ -99,7 +106,7 @@ public class FileHelper implements Generator {
         for (int i = 0; i < outputLines.size(); i++) {
             String[] lines = outputLines.get(i).split("\n");
 
-            for (int j = 0; j < OUTPUT_LINES_MAX - 1; j++) {
+            for (int j = 0; j < OUTPUT_LINES_MAX; j++) {
                 gui.listModel.addElement(lines[j]);
             }
             gui.listModel.addElement("\n");
