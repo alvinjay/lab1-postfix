@@ -6,7 +6,6 @@ package UI;/*
 import java.io.File;
 import java.util.Hashtable;
 import java.util.Enumeration;
-import javax.swing.filechooser.*;
 
 /**
  * A convenience implementation of FileFilter that filters out
@@ -27,7 +26,7 @@ import javax.swing.filechooser.*;
  * @version 1.16 07/26/04
  * @author Jeff Dinkins
  */
-public class ExampleFileFilter extends FileFilter {
+public class FileFilter extends javax.swing.filechooser.FileFilter {
 
     private Hashtable filters = null;
     private String description = null;
@@ -40,7 +39,7 @@ public class ExampleFileFilter extends FileFilter {
      *
      * @see #addExtension
      */
-    public ExampleFileFilter() {
+    public FileFilter() {
         this.filters = new Hashtable();
     }
 
@@ -50,7 +49,7 @@ public class ExampleFileFilter extends FileFilter {
      *
      * @see #addExtension
      */
-    public ExampleFileFilter(String extension) {
+    public FileFilter(String extension) {
         this(extension,null);
     }
 
@@ -63,7 +62,7 @@ public class ExampleFileFilter extends FileFilter {
      *
      * @see #addExtension
      */
-    public ExampleFileFilter(String extension, String description) {
+    public FileFilter(String extension, String description) {
         this();
         if(extension!=null) addExtension(extension);
         if(description!=null) setDescription(description);
@@ -78,7 +77,7 @@ public class ExampleFileFilter extends FileFilter {
      *
      * @see #addExtension
      */
-    public ExampleFileFilter(String[] filters) {
+    public FileFilter(String[] filters) {
         this(filters, null);
     }
 
@@ -90,7 +89,7 @@ public class ExampleFileFilter extends FileFilter {
      *
      * @see #addExtension
      */
-    public ExampleFileFilter(String[] filters, String description) {
+    public FileFilter(String[] filters, String description) {
         this();
         for (int i = 0; i < filters.length; i++) {
             // add filters one by one

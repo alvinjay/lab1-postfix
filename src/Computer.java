@@ -1,17 +1,21 @@
-import com.sun.tools.javac.jvm.Gen;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * Created by alvinjay on 2/5/15.
+ * Created by Gabriel Lagmay on 2/7/15.
+ * Decription
+ *  -include methods for evaluating postfix expressions
  */
 public class Computer implements Generator{
 
+    /* Pre output line label */
     private final String preOutputLine = "Evaluation: ";
-    private ArrayList<String> variableNames;
+
+    /* Acts as symbol table in the compilation process :) */
     private HashMap<String, Integer> variables;
+
+    /* Arraylist of output lines for each input line */
     private ArrayList<String> outputLines;
 
     private Object popped;
@@ -19,21 +23,17 @@ public class Computer implements Generator{
 
     private Stack operand = new Stack();
 
-    public Computer(ArrayList<String> variableNames, HashMap<String, Integer> variables, ArrayList<String> outputLines) {
-        this.variableNames = variableNames;
+    public Computer(HashMap<String, Integer> variables, ArrayList<String> outputLines) {
         this.variables = variables;
         this.outputLines = outputLines;
-        //a = 5
-        //= 5 a
-        //a 5
     }
 
-    //computeValue
     public void computeValue (Stack a, int index) {
 
         // flag for expression or statement
         boolean expression = false;
 
+        // check whether expression or statement
         if (a.contains("=")) {
             operand.push(a.pop().toString());
             expression = true;
@@ -41,62 +41,51 @@ public class Computer implements Generator{
 
         while(!a.isEmpty()) {
             popped = a.pop();
+
+            // if variable is declared and has a value then push the value instead
             if(variables.containsKey(popped)) {
                 operand.push(variables.get(popped));
             }
-            else if(popped.toString().equals("+")) {
-                first = Integer.parseInt(operand.pop().toString());
-                second = Integer.parseInt(operand.pop().toString());
-                tempAnswer = second + first;
-                operand.push(tempAnswer.toString());
-//                System.out.println("plus");
-            }
-            //a b 2 + a - =
-            //= - a + 2 b a
-            else if(popped.toString().equals("-")) {
-                first = Integer.parseInt(operand.pop().toString());
-                second = Integer.parseInt(operand.pop().toString());
-                tempAnswer = second - first;
-                operand.push(tempAnswer.toString());
-//                System.out.println("minus");
-            }
-
-            else if(popped.toString().equals("*")) {
-                first = Integer.parseInt(operand.pop().toString());
-                second = Integer.parseInt(operand.pop().toString());
-                tempAnswer = second * first;
-                operand.push(tempAnswer.toString());
-//                System.out.println("times");
-            }
-
-            else if(popped.toString().equals("/")) {
-                first = Integer.parseInt(operand.pop().toString());
-                second = Integer.parseInt(operand.pop().toString());
-
-                tempAnswer = second / first;
-                operand.push(tempAnswer.toString());
-//                System.out.println("divide");
-            }
-
-            else if(popped.toString().equals("%")) {
-                first = Integer.parseInt(operand.pop().toString());
-                second = Integer.parseInt(operand.pop().toString());
-                tempAnswer = second % first;
-                operand.push(tempAnswer.toString());
-//                System.out.println("modulo");
-            }
-
-            else if(popped.toString().equals("=")) {
-                int answer = Integer.parseInt(operand.pop().toString());
-//                System.out.println(operand.peek().toString() + " = "  + answer);
-
-                variables.put(operand.peek().toString(), answer);
-                variableNames.add(operand.peek().toString());
-            }
-
             else {
-                operand.push(popped);
-//                System.out.println("var");
+                switch (popped.toString().charAt(0)) {
+                    case '+':
+                        first = Integer.parseInt(operand.pop().toString());
+                        second = Integer.parseInt(operand.pop().toString());
+                        tempAnswer = second + first;
+                        operand.push(tempAnswer.toString());
+                        break;
+                    case '-':
+                        first = Integer.parseInt(operand.pop().toString());
+                        second = Integer.parseInt(operand.pop().toString());
+                        tempAnswer = second - first;
+                        operand.push(tempAnswer.toString());
+                        break;
+                    case '*':
+                        first = Integer.parseInt(operand.pop().toString());
+                        second = Integer.parseInt(operand.pop().toString());
+                        tempAnswer = second * first;
+                        operand.push(tempAnswer.toString());
+                        break;
+                    case '/':
+                        first = Integer.parseInt(operand.pop().toString());
+                        second = Integer.parseInt(operand.pop().toString());
+                        tempAnswer = second / first;
+                        operand.push(tempAnswer.toString());
+                        break;
+                    case '%':
+                        first = Integer.parseInt(operand.pop().toString());
+                        second = Integer.parseInt(operand.pop().toString());
+                        tempAnswer = second % first;
+                        operand.push(tempAnswer.toString());
+                        break;
+                    case '=':
+                        int answer = Integer.parseInt(operand.pop().toString());
+                        variables.put(operand.peek().toString(), answer);
+                        break;
+                    default:
+                        operand.push(popped);
+                        break;
+                }
             }
         }
 

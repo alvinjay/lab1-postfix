@@ -1,18 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import javax.swing.*;
-import java.util.logging.FileHandler;
-
 /**
- *
- * @author Lord Gaude Writchbrr
+ * @author Raph Tugasan on 02/06/15
+ * Description
+ *  -Main UI class form
  */
 public class GUI extends javax.swing.JFrame {
 
+    /* Class instantiations */
     private FileHelper fileHelper = new FileHelper(GUI.this);
+
+    /* Number of output lines for each input line */
+    private final int OUTPUT_LINES_MAX = 3;
 
     /**
      * Creates new form GUI
@@ -33,7 +31,6 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listModel = new DefaultListModel();
         consoleScreen = new javax.swing.JList(listModel);
-//        consoleScreen.add
         loadButton = new javax.swing.JButton();
         processButton = new javax.swing.JButton();
 
@@ -88,15 +85,67 @@ public class GUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Load button onClickListener
+     * @param evt
+     */
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         fileHelper.chooseFile();
         // TODO add your handling code here:
     }//GEN-LAST:event_loadButtonActionPerformed
 
+    /**
+     * Process button onClickListener
+     * @param evt
+     */
     private void processButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         fileHelper.processCurrentFile();
         // TODO add your handling code here:
     }//GEN-LAST:event_loadButtonActionPerformed
+
+    /**
+     * Prints to console screen the three output lines required for each input line
+     * @param lines
+     */
+    public void printOutputLines (String[] lines) {
+        for (int i = 0; i < OUTPUT_LINES_MAX; i++) {
+            listModel.addElement(lines[i]);
+        }
+        listModel.addElement("\n");
+    }
+
+    /**
+     * Prints to console screen that file processing is done successfully
+     * @param fileName
+     */
+    public void printDoneProcessingRemarks (String fileName) {
+        listModel.addElement("Done processing \"" + fileName + "\" :)");
+        listModel.addElement("\n");
+    }
+
+    /**
+     * Prints to console screen that file loading is done successfully
+     * @param fileName
+     */
+    public void printDoneLoadingRemarks (String fileName) {
+        listModel.addElement("\"" +fileName + " \" was successfully loaded :)");
+        listModel.addElement("\n");
+    }
+
+    /**
+     * Prints to console screen that user has cancelled file loading process
+     */
+    public void printCancelledLoadingRemarks () {
+        listModel.addElement("Loading Process canceled :(");
+        listModel.addElement("\n");
+    }
+
+    /**
+     * Clears the content of the console screen
+     */
+    public void clearScreen () {
+        listModel.clear();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton loadButton;

@@ -14,25 +14,27 @@ import java.util.Stack;
  */
 public class FileHelper implements Generator {
 
+    /* Class instatiations */
     private GUI gui;
 
     private Scanner input;
 
-    private final int OUTPUT_LINES_MAX = 3;
-    // current project directory path
+    /* Current project directory path */
     private final String projectDir = System.getProperty("user.dir");
 
-    private ArrayList<String> variableNames = new ArrayList<String>();
-    // acts as symbol table in the compilation process :)
+    /* Acts as symbol table in the compilation process :) */
     private HashMap<String, Integer> variables = new HashMap<String, Integer>();
-    // arraylist of output lines for each input line
+    /* Arraylist of output lines for each input line */
     private ArrayList<String> outputLines = new ArrayList<String>();
 
+    /* Class instatiations */
     private Parser parser = new Parser(outputLines);
-    private Computer comp = new Computer(variableNames, variables, outputLines);
+    private Computer comp = new Computer(variables, outputLines);
 
+    /* Pre output line label */
     private final String preOutputLine = "Line ";
 
+    /* chosen file attributes */
     private String filePath, fileName;
 
     public FileHelper(GUI gui) {
@@ -52,7 +54,7 @@ public class FileHelper implements Generator {
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         // set default directory
         chooser.setCurrentDirectory(new File(projectDir));
-        ExampleFileFilter filter = new ExampleFileFilter();
+        FileFilter filter = new FileFilter();
         filter.addExtension("in");
         filter.setDescription("Input Files");
         chooser.setFileFilter(filter);
@@ -69,16 +71,20 @@ public class FileHelper implements Generator {
                 System.out.println("Error: IO error");
             }
 
-            gui.listModel.addElement("\"" +fileName + " \" was successfully loaded :)");
+            gui.printDoneLoadingRemarks(fileName);
             System.out.println("You chose " + filePath);
         }
         else {
-            gui.listModel.addElement("Process canceled :(");
+            gui.printCancelledLoadingRemarks();
             System.out.println("Process canceled");
         }
-        gui.listModel.addElement("\n");
     }
 
+    /**
+     * Loads the file found in the path provided
+     * @param path
+     * @throws IOException
+     */
     private void loadFile(String path) throws IOException{
 
         FileReader fr = new FileReader(path);
@@ -86,13 +92,16 @@ public class FileHelper implements Generator {
 
     }
 
+    /**
+     * Processes the currently loaded input file
+     */
     public void processCurrentFile () {
         for (int i = 0; input.hasNextLine(); i++) {
-            String line = input.nextLine();
-            generateOutputLine(line, i);
-            Stack temps = parser.convertToPostfix(line, i);
-            comp.computeValue(temps, i);
-//            int size = temps.size();
+            String inputLine = input.nextLine();
+            generateOutputLine(inputLine, i);
+            Stack postfix = parser.convertToPostfix(inputLine, i);
+            comp.computeValue(postfix, i);
+            //            int size = temps.size();
 //            for (int j = 0; j < size; j++) {
 //                System.out.println(temps.pop());
 //            }
@@ -101,20 +110,15 @@ public class FileHelper implements Generator {
 //            }
         }
 
-        gui.listModel.clear();
+        gui.clearScreen();
 
         for (int i = 0; i < outputLines.size(); i++) {
             String[] lines = outputLines.get(i).split("\n");
-
-            for (int j = 0; j < OUTPUT_LINES_MAX; j++) {
-                gui.listModel.addElement(lines[j]);
-            }
-            gui.listModel.addElement("\n");
-            System.out.println(outputLines.get(i));
+            gui.printOutputLines(lines);
+//            System.out.println(outputLines.get(i));
         }
 
-        gui.listModel.addElement("Done processing \"" + fileName + "\" :)");
-        gui.listModel.addElement("\n");
+        gui.printDoneProcessingRemarks(fileName);
 
         outputLines.clear();
     }

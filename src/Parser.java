@@ -1,33 +1,35 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 /**
  * Created by alvinjay on 2/5/15.
+ * Description:
+ *  - include methods for parsing input files
  */
 public class Parser implements Generator {
+
+    /* Class Instantiation */
     Constants constants = new Constants();
 
+    /* Contains the postfixArrayStack lines for each input line */
     private ArrayList<String> outputLines;
 
-    // pre defined operators
-    private String OPERATORS;
-    // operator weights
+    /* Operator weights */
     private HashMap<Character, Integer> OPERATOR_WEIGHTS;
 
-    // stacks for operators from inputs
+    /* Stack for operators from inputs */
     private Stack ops = new Stack();
-    // postfix of input in stack form
-    private Stack output = new Stack();
-    // postfix of input in reverse stack form (for easier parsing in computing phase)
-    private ArrayList<String> postfix = new ArrayList<String>();
+    /* Stack of input in stack form */
+    private Stack postfixStack = new Stack();
+    /* Arraylist of input in reverse stack form (for easier parsing in computing phase) */
+    private ArrayList<String> postfixArray = new ArrayList<String>();
 
+    /* Pre output line label */
     private final String preOutputLine = "Postfix Form: ";
 
     public Parser(ArrayList<String> outputLines) {
         this.outputLines = outputLines;
-        this.OPERATORS = constants.getOperators();
         this.OPERATOR_WEIGHTS = constants.getOperatorWeights();
     }
 
@@ -41,7 +43,7 @@ public class Parser implements Generator {
         line = line.replace(" ", "");
 
         // reset for new input line
-        postfix.clear();
+        postfixArray.clear();
 
         /**
          * holds operands ONLY
@@ -59,7 +61,7 @@ public class Parser implements Generator {
                 operand += line.charAt(i);
             } else {
                 // push accumulated number characters
-                output.push(operand);
+                postfixStack.push(operand);
                 // reset operand string to empty string
                 operand = "";
 
@@ -78,22 +80,22 @@ public class Parser implements Generator {
         }
 
         // push the last operand recorded
-        output.push(operand);
+        postfixStack.push(operand);
 
         // pop out remaining operations left in ops stack
         // and push them to ouput stack
         while(!ops.empty()) {
-            output.push(ops.pop());
+            postfixStack.push(ops.pop());
         }
 
-        // make reverse form of postfix string
-        while(!output.empty()) {
-            postfix.add(output.pop().toString());
+        // make reverse form of postfixArray string
+        while(!postfixStack.empty()) {
+            postfixArray.add(postfixStack.pop().toString());
         }
 
-        generateOutputLine(convertArrayListToString(postfix), index);
+        generateOutputLine(convertArrayListToString(postfixArray), index);
 
-        return convertArrayListToStack(postfix);
+        return convertArrayListToStack(postfixArray);
     }
 
     /**
@@ -114,7 +116,7 @@ public class Parser implements Generator {
     private void processOperators(char a, char b) {
 //        System.out.println(a + " " + b);
         if (OPERATOR_WEIGHTS.get(((Object) b)) <= OPERATOR_WEIGHTS.get(((Object) a))) {
-            output.push(a);
+            postfixStack.push(a);
             ops.pop();
             ops.push(b);
         } else {
@@ -129,13 +131,13 @@ public class Parser implements Generator {
      * @return
      */
     private String convertArrayListToString(ArrayList a) {
-        String postfixString = "";
+        String postfixArrayString = "";
 
         for (int i = a.size() - 1; i >= 0; i--) {
-            postfixString += a.get(i) + " ";
+            postfixArrayString += a.get(i) + " ";
         }
 
-        return postfixString;
+        return postfixArrayString;
     }
 
     /**
@@ -152,12 +154,12 @@ public class Parser implements Generator {
     }
 
     @Override
-    public void generateOutputLine(String postfix, int index) {
-        // retrieve the existing output line for the index
+    public void generateOutputLine(String postfixArray, int index) {
+        // retrieve the existing postfixArrayStack line for the index
         String indexOutputLine = outputLines.get(index);
-        // append the postfix string
-        indexOutputLine += preOutputLine + postfix + "\n";
-        // set the new value to the index of the output line
+        // append the postfixArray string
+        indexOutputLine += preOutputLine + postfixArray + "\n";
+        // set the new value to the index of the postfixArrayStack line
         outputLines.set(index, indexOutputLine);
     }
 }
