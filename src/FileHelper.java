@@ -58,6 +58,7 @@ public class FileHelper implements Generator {
         chooser.setFileFilter(filter);
         int option = chooser.showOpenDialog(gui);
         if (option == JFileChooser.APPROVE_OPTION) {
+            gui.enableProcessButton();
             File sf = chooser.getSelectedFile();
 
             filePath = sf.getAbsolutePath();

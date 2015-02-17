@@ -33,6 +33,7 @@ public class GUI extends javax.swing.JFrame {
         consoleScreen = new javax.swing.JList(listModel);
         loadButton = new javax.swing.JButton();
         processButton = new javax.swing.JButton();
+        processButton.setEnabled(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Programming Exercise 01 - Arithmetic Evaluation");
@@ -145,6 +146,13 @@ public class GUI extends javax.swing.JFrame {
      */
     public void clearScreen () {
         listModel.clear();
+    }
+
+    /**
+     * Enable process button
+     */
+    public void enableProcessButton() {
+        processButton.setEnabled(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
