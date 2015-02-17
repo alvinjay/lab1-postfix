@@ -10,7 +10,7 @@ import java.util.Stack;
 public class Evaluator implements Generator{
 
     /* Pre output line label */
-    private final String preOutputLine = "Evaluation: ";
+    private final String preOutputLine = "Result: ";
 
     /* Acts as symbol table in the compilation process :) */
     private HashMap<String, Long> variables;

@@ -2,6 +2,8 @@ import java.util.HashMap;
 
 /**
  * Created by alvinjay on 2/5/15.
+ * Description:
+ *  -contains pre determined operators and precedence values
  */
 public class Constants {
     // predefined operators

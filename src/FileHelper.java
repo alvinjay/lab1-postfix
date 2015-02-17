@@ -9,6 +9,9 @@ import java.util.*;
 
 /**
  * Created by alvinjay on 2/8/15.
+ * Description:
+ *  - include methods for file handling
+ *  - includes load file, process file, and write to output file
  */
 public class FileHelper implements Generator {
 
@@ -16,6 +19,9 @@ public class FileHelper implements Generator {
     private GUI gui;
     private FileWriter fw;
     private Scanner input;
+
+    /* String that will contain input from loaded file */
+    private String inputString = new String();
 
     /* Current project directory path */
     private final String projectDir = System.getProperty("user.dir");
@@ -58,8 +64,8 @@ public class FileHelper implements Generator {
         chooser.setFileFilter(filter);
         int option = chooser.showOpenDialog(gui);
         if (option == JFileChooser.APPROVE_OPTION) {
-            gui.enableProcessButton();
-            File sf = chooser.getSelectedFile();
+            gui.enableProcessButton(); //enable process button
+            File sf = chooser.getSelectedFile(); //retrieve file
 
             filePath = sf.getAbsolutePath();
             fileName = sf.getName();
@@ -86,7 +92,12 @@ public class FileHelper implements Generator {
      */
     private void loadFile(String path) throws IOException{
         FileReader fr = new FileReader(path);
+        StringBuilder sb = new StringBuilder();
         input = new Scanner(fr);
+        while(input.hasNextLine()) {
+            sb.append(input.nextLine().replaceAll("\\s+", " ").trim() + "\n"); //clean the input for display
+        }
+        inputString = sb.toString();
     }
 
     /**
@@ -95,18 +106,12 @@ public class FileHelper implements Generator {
     public void processCurrentFile () {
         setOutputFile(fileName);
         System.out.println(fileName);
-        for (int i = 0; input.hasNextLine(); i++) {
-            String inputLine = input.nextLine();
+        String[] inputLines = inputString.split("\n");
+        for (int i = 0; i < inputLines.length; i++) {
+            String inputLine = inputLines[i];
             generateOutputLine(inputLine, i);
-            Stack postfix = parser.convertToPostfix(inputLine, i);
+            Stack postfix = parser.convertToPostfix(inputLine.replaceAll(" ", ""), i);
             comp.computeValue(postfix, i);
-            //            int size = temps.size();
-//            for (int j = 0; j < size; j++) {
-//                System.out.println(temps.pop());
-//            }
-//            for (int j = 0; j < variableNames.size(); j++) {
-//                System.out.println(variables.get(variableNames.get(j)));
-//            }
         }
 
         gui.clearScreen();
@@ -124,12 +129,6 @@ public class FileHelper implements Generator {
         outputLines.clear(); // reset for other input files
 
         closeOutputFile(); // close output file writer
-
-        try {
-            loadFile(filePath);
-        } catch (IOException e){
-            System.out.println("Error: IO error");
-        }
     }
 
     /**
@@ -139,7 +138,7 @@ public class FileHelper implements Generator {
     private void setOutputFile(String fileName) {
         try {
             fw = new FileWriter(fileName.replaceAll(".in", ".out"));
-            fw.write("Output Lines:" + "\n");
+//            fw.write("Output Lines:" + "\n");
         } catch (IOException e) {
             System.out.println("Error: " + e.toString());
         }
@@ -166,7 +165,7 @@ public class FileHelper implements Generator {
     private void writeVariablesToOutputFile(){
         Iterator it = variables.entrySet().iterator();
         try {
-            fw.write("Variables:" + "\n");
+//            fw.write("Variables:" + "\n");
             while (it.hasNext()) {
                 Map.Entry pairs = (Map.Entry)it.next();
                 fw.write(pairs.getKey() + " = " + pairs.getValue() + "\n");
@@ -191,7 +190,7 @@ public class FileHelper implements Generator {
     @Override
     public void generateOutputLine(String given, int index) {
         // include pre output line words for readability
-        String indexOutputLine = preOutputLine + (index + 1) + ": " + given + "\n";
+        String indexOutputLine = preOutputLine + ": " + given + "\n";
         // add to arraylist of output lines
         outputLines.add(index, indexOutputLine);
     }

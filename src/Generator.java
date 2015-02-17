@@ -1,5 +1,6 @@
 /**
  * Created by alvinjay on 2/7/15.
+ * Interface for generating output lines
  */
 public interface Generator {
     /**

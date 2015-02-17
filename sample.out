@@ -1,16 +1,21 @@
-Output Lines:
-Postfix Form: ar 12 6 * 8 2 / + = 
-Evaluation: ar = 76
+Postfix: ar 12 6 * 8 2 / + = 
+Result: ar = 76
 
-Postfix Form: b 2 = 
-Evaluation: b = 2
+Postfix: b 2 = 
+Result: b = 2
 
-Postfix Form: ar b 2 + ar - c + = 
-Evaluation: Undefined variable: "c"
+Postfix: ar b 2 + ar - c + = 
+Result: Undefined variable: "c"
 
-Postfix Form: 3 3 * 3 % 2 - 
-Evaluation: -2
+Postfix: 3 3 * 3 % 2 - 
+Result: -2
 
-Variables:
+Postfix: c 1 = 
+Result: c = 1
+
+Postfix: ar ar c b * - = 
+Result: ar = 74
+
 b = 2
-ar = 76
+c = 1
+ar = 74

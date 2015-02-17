@@ -6,6 +6,7 @@ import java.util.Stack;
  * Created by alvinjay on 2/5/15.
  * Description:
  *  - include methods for parsing input files
+ *  - includes conversion from infix to postfix
  */
 public class Parser implements Generator {
 
@@ -26,7 +27,7 @@ public class Parser implements Generator {
     private ArrayList<String> postfixArray = new ArrayList<String>();
 
     /* Pre output line label */
-    private final String preOutputLine = "Postfix Form: ";
+    private final String preOutputLine = "Postfix: ";
 
     public Parser(ArrayList<String> outputLines) {
         this.outputLines = outputLines;
@@ -39,9 +40,6 @@ public class Parser implements Generator {
      * @return
      */
     public Stack convertToPostfix(String line, int index) {
-        //remove spaces in between characters
-        line = line.replace(" ", "");
-
         // reset for new input line
         postfixArray.clear();
 
