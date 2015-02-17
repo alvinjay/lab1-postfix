@@ -1,10 +1,8 @@
-Output Lines:
-Postfix Form: a 2 = 
-Evaluation: a = 2
+Postfix: a 2 = 
+Result: a = 2
 
-Postfix Form: c 1 = 
-Evaluation: c = 1
+Postfix: c 1 = 
+Result: c = 1
 
-Variables:
 c = 1
 a = 2

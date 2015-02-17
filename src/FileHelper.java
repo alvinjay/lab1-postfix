@@ -30,10 +30,12 @@ public class FileHelper implements Generator {
     private HashMap<String, Long> variables = new HashMap<String, Long>();
     /* Arraylist of output lines for each input line */
     private ArrayList<String> outputLines = new ArrayList<String>();
+    /* Arraylist of the errors encountered during process file */
+    private ArrayList<String> errors = new ArrayList<String>();
 
     /* Class instatiations */
     private Parser parser = new Parser(outputLines);
-    private Evaluator comp = new Evaluator(variables, outputLines);
+    private Evaluator comp = new Evaluator(variables, outputLines, errors);
 
     /* Pre output line label */
     private final String preOutputLine = "Line ";
@@ -124,9 +126,11 @@ public class FileHelper implements Generator {
 
         writeVariablesToOutputFile(); // write variables to output file
 
-        gui.printDoneProcessingRemarks(fileName);
+        gui.printDoneProcessingRemarks(fileName, errors);
 
         outputLines.clear(); // reset for other input files
+
+        errors.clear(); // reset errors for other input files
 
         closeOutputFile(); // close output file writer
     }

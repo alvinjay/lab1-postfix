@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.util.ArrayList;
+
 /**
  * @author Raph Tugasan on 02/06/15
  * Description
@@ -119,9 +121,20 @@ public class GUI extends javax.swing.JFrame {
      * Prints to console screen that file processing is done successfully
      * @param fileName
      */
-    public void printDoneProcessingRemarks (String fileName) {
-        listModel.addElement("Done processing \"" + fileName + "\" :)");
-        listModel.addElement("\n");
+    public void printDoneProcessingRemarks (String fileName, ArrayList<String> errors) {
+
+        if (errors.size() == 0) {
+            listModel.addElement("Done processing \"" + fileName + "\" :)");
+            listModel.addElement("\n");
+        } else if (errors.size() > 0) {
+            listModel.addElement("Done processing \"" + fileName + "\"");
+            listModel.addElement("\n");
+            listModel.addElement("Errors found: ");
+            for (int i = 0; i < errors.size(); i++) {
+                listModel.addElement(errors.get(i));
+            }
+            listModel.addElement("\n");
+        }
     }
 
     /**

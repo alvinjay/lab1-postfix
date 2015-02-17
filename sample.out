@@ -1,11 +1,8 @@
 Postfix: ar 12 6 * 8 2 / + = 
 Result: ar = 76
 
-Postfix: b 2 = 
-Result: b = 2
-
 Postfix: ar b 2 + ar - c + = 
-Result: Undefined variable: "c"
+Result: Undefined variable: "b"
 
 Postfix: 3 3 * 3 % 2 - 
 Result: -2
@@ -14,8 +11,11 @@ Postfix: c 1 =
 Result: c = 1
 
 Postfix: ar ar c b * - = 
-Result: ar = 74
+Result: Undefined variable: "b"
 
-b = 2
+Postfix: b 0 = 
+Result: b = 0
+
+b = 0
 c = 1
-ar = 74
+ar = 76

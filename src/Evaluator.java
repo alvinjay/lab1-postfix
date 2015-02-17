@@ -17,6 +17,8 @@ public class Evaluator implements Generator{
 
     /* Arraylist of output lines for each input line */
     private ArrayList<String> outputLines;
+    /* Arraylist of the errors encountered during process file */
+    private ArrayList<String> errors = new ArrayList<String>();
 
     /* Temporary variables */
     private Object popped;
@@ -24,9 +26,10 @@ public class Evaluator implements Generator{
 
     private Stack operand = new Stack();
 
-    public Evaluator(HashMap<String, Long> variables, ArrayList<String> outputLines) {
+    public Evaluator(HashMap<String, Long> variables, ArrayList<String> outputLines, ArrayList<String> errors) {
         this.variables = variables;
         this.outputLines = outputLines;
+        this.errors = errors;
     }
 
     /**
@@ -95,7 +98,9 @@ public class Evaluator implements Generator{
                             break;
                     }
                 } catch(NumberFormatException e) {
-                    generateOutputLine("Undefined " + e.getMessage().replaceAll("For input string", "variable"), index);
+                    String errorMessage = "Undefined " + e.getMessage().replaceAll("For input string", "variable");
+                    generateOutputLine(errorMessage, index);
+                    errors.add("-Line " + (index + 1) + ": " + errorMessage);
                     return false;
                 }
             }
