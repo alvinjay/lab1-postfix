@@ -28,7 +28,7 @@ public class Computer implements Generator{
         this.outputLines = outputLines;
     }
 
-    public void computeValue (Stack a, int index) {
+    public Boolean computeValue (Stack a, int index) {
 
         // flag for expression or statement
         boolean expression = false;
@@ -47,44 +47,49 @@ public class Computer implements Generator{
                 operand.push(variables.get(popped));
             }
             else {
-                switch (popped.toString().charAt(0)) {
-                    case '+':
-                        first = Integer.parseInt(operand.pop().toString());
-                        second = Integer.parseInt(operand.pop().toString());
-                        tempAnswer = second + first;
-                        operand.push(tempAnswer.toString());
-                        break;
-                    case '-':
-                        first = Integer.parseInt(operand.pop().toString());
-                        second = Integer.parseInt(operand.pop().toString());
-                        tempAnswer = second - first;
-                        operand.push(tempAnswer.toString());
-                        break;
-                    case '*':
-                        first = Integer.parseInt(operand.pop().toString());
-                        second = Integer.parseInt(operand.pop().toString());
-                        tempAnswer = second * first;
-                        operand.push(tempAnswer.toString());
-                        break;
-                    case '/':
-                        first = Integer.parseInt(operand.pop().toString());
-                        second = Integer.parseInt(operand.pop().toString());
-                        tempAnswer = second / first;
-                        operand.push(tempAnswer.toString());
-                        break;
-                    case '%':
-                        first = Integer.parseInt(operand.pop().toString());
-                        second = Integer.parseInt(operand.pop().toString());
-                        tempAnswer = second % first;
-                        operand.push(tempAnswer.toString());
-                        break;
-                    case '=':
-                        int answer = Integer.parseInt(operand.pop().toString());
-                        variables.put(operand.peek().toString(), answer);
-                        break;
-                    default:
-                        operand.push(popped);
-                        break;
+                try {
+                    switch (popped.toString().charAt(0)) {
+                        case '+':
+                            first = Integer.parseInt(operand.pop().toString());
+                            second = Integer.parseInt(operand.pop().toString());
+                            tempAnswer = second + first;
+                            operand.push(tempAnswer.toString());
+                            break;
+                        case '-':
+                            first = Integer.parseInt(operand.pop().toString());
+                            second = Integer.parseInt(operand.pop().toString());
+                            tempAnswer = second - first;
+                            operand.push(tempAnswer.toString());
+                            break;
+                        case '*':
+                            first = Integer.parseInt(operand.pop().toString());
+                            second = Integer.parseInt(operand.pop().toString());
+                            tempAnswer = second * first;
+                            operand.push(tempAnswer.toString());
+                            break;
+                        case '/':
+                            first = Integer.parseInt(operand.pop().toString());
+                            second = Integer.parseInt(operand.pop().toString());
+                            tempAnswer = second / first;
+                            operand.push(tempAnswer.toString());
+                            break;
+                        case '%':
+                            first = Integer.parseInt(operand.pop().toString());
+                            second = Integer.parseInt(operand.pop().toString());
+                            tempAnswer = second % first;
+                            operand.push(tempAnswer.toString());
+                            break;
+                        case '=':
+                            int answer = Integer.parseInt(operand.pop().toString());
+                            variables.put(operand.peek().toString(), answer);
+                            break;
+                        default:
+                            operand.push(popped);
+                            break;
+                    }
+                } catch(NumberFormatException e) {
+                    generateOutputLine("Undefined " + e.getMessage().replaceAll("For input string", "variable"), index);
+                    return false;
                 }
             }
         }
@@ -94,6 +99,8 @@ public class Computer implements Generator{
             generateOutputLine(operand.peek() + " = " + variables.get(operand.pop()), index);
         else
             generateOutputLine(operand.pop().toString(), index);
+
+        return true;
     }
 
 
@@ -102,7 +109,7 @@ public class Computer implements Generator{
         // retrieve the existing output line for the index
         String indexOutputLine = outputLines.get(index);
         // append the postfix string
-        indexOutputLine += preOutputLine  + ": " + evaluation + "\n";
+        indexOutputLine += preOutputLine + evaluation + "\n";
         // set the new value to the index of the output line
         outputLines.set(index, indexOutputLine);
     }

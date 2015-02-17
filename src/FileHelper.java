@@ -3,11 +3,9 @@ import UI.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by alvinjay on 2/8/15.
@@ -16,7 +14,7 @@ public class FileHelper implements Generator {
 
     /* Class instatiations */
     private GUI gui;
-
+    private FileWriter fw;
     private Scanner input;
 
     /* Current project directory path */
@@ -96,6 +94,7 @@ public class FileHelper implements Generator {
      * Processes the currently loaded input file
      */
     public void processCurrentFile () {
+        setOutputFile(fileName);
         for (int i = 0; input.hasNextLine(); i++) {
             String inputLine = input.nextLine();
             generateOutputLine(inputLine, i);
@@ -114,13 +113,57 @@ public class FileHelper implements Generator {
 
         for (int i = 0; i < outputLines.size(); i++) {
             String[] lines = outputLines.get(i).split("\n");
+            writeToOutputFile(lines);
             gui.printOutputLines(lines);
 //            System.out.println(outputLines.get(i));
         }
 
         gui.printDoneProcessingRemarks(fileName);
-
         outputLines.clear();
+        writeVariablesToOutputFile();
+        closeOutputFile();
+    }
+
+    private void setOutputFile(String fileName) {
+        try {
+            fw = new FileWriter(fileName.replaceAll(".in", ".out"));
+            fw.write("Output Lines:" + "\n");
+        } catch (IOException e) {
+            System.out.println("Error: " + e.toString());
+        }
+    }
+
+    private void writeToOutputFile(String[] lines){
+        try {
+            for (int i = 1; i < lines.length; i++) {
+                fw.write(lines[i] + "\n");
+            }
+            fw.write("\n");
+        } catch(IOException e) {
+            System.out.println("Error:" + e.toString());
+        }
+    }
+
+    private void writeVariablesToOutputFile(){
+        Iterator it = variables.entrySet().iterator();
+        try {
+            fw.write("Variables:" + "\n");
+            while (it.hasNext()) {
+                Map.Entry pairs = (Map.Entry)it.next();
+                fw.write(pairs.getKey() + " = " + pairs.getValue() + "\n");
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+        } catch(IOException e) {
+            System.out.println("Error:" + e.toString());
+        }
+    }
+
+    private void closeOutputFile(){
+        try {
+            fw.close();
+        } catch(IOException e){
+            System.out.println("Error:" + e.toString());
+        }
     }
 
     @Override
