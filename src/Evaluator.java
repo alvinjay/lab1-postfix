@@ -7,27 +7,34 @@ import java.util.Stack;
  * Decription
  *  -include methods for evaluating postfix expressions
  */
-public class Computer implements Generator{
+public class Evaluator implements Generator{
 
     /* Pre output line label */
     private final String preOutputLine = "Evaluation: ";
 
     /* Acts as symbol table in the compilation process :) */
-    private HashMap<String, Integer> variables;
+    private HashMap<String, Long> variables;
 
     /* Arraylist of output lines for each input line */
     private ArrayList<String> outputLines;
 
+    /* Temporary variables */
     private Object popped;
-    private Integer first, second, tempAnswer;
+    private Long first, second, tempAnswer;
 
     private Stack operand = new Stack();
 
-    public Computer(HashMap<String, Integer> variables, ArrayList<String> outputLines) {
+    public Evaluator(HashMap<String, Long> variables, ArrayList<String> outputLines) {
         this.variables = variables;
         this.outputLines = outputLines;
     }
 
+    /**
+     * Evaluates the corresponding value for postfix stack
+     * @param a - postfix stack
+     * @param index - (line number - 1)
+     * @return
+     */
     public Boolean computeValue (Stack a, int index) {
 
         // flag for expression or statement
@@ -50,37 +57,37 @@ public class Computer implements Generator{
                 try {
                     switch (popped.toString().charAt(0)) {
                         case '+':
-                            first = Integer.parseInt(operand.pop().toString());
-                            second = Integer.parseInt(operand.pop().toString());
+                            first = Long.parseLong(operand.pop().toString());
+                            second = Long.parseLong(operand.pop().toString());
                             tempAnswer = second + first;
                             operand.push(tempAnswer.toString());
                             break;
                         case '-':
-                            first = Integer.parseInt(operand.pop().toString());
-                            second = Integer.parseInt(operand.pop().toString());
+                            first = Long.parseLong(operand.pop().toString());
+                            second = Long.parseLong(operand.pop().toString());
                             tempAnswer = second - first;
                             operand.push(tempAnswer.toString());
                             break;
                         case '*':
-                            first = Integer.parseInt(operand.pop().toString());
-                            second = Integer.parseInt(operand.pop().toString());
+                            first = Long.parseLong(operand.pop().toString());
+                            second = Long.parseLong(operand.pop().toString());
                             tempAnswer = second * first;
                             operand.push(tempAnswer.toString());
                             break;
                         case '/':
-                            first = Integer.parseInt(operand.pop().toString());
-                            second = Integer.parseInt(operand.pop().toString());
+                            first = Long.parseLong(operand.pop().toString());
+                            second = Long.parseLong(operand.pop().toString());
                             tempAnswer = second / first;
                             operand.push(tempAnswer.toString());
                             break;
                         case '%':
-                            first = Integer.parseInt(operand.pop().toString());
-                            second = Integer.parseInt(operand.pop().toString());
+                            first = Long.parseLong(operand.pop().toString());
+                            second = Long.parseLong(operand.pop().toString());
                             tempAnswer = second % first;
                             operand.push(tempAnswer.toString());
                             break;
                         case '=':
-                            int answer = Integer.parseInt(operand.pop().toString());
+                            Long answer = Long.parseLong(operand.pop().toString());
                             variables.put(operand.peek().toString(), answer);
                             break;
                         default:
@@ -102,7 +109,6 @@ public class Computer implements Generator{
 
         return true;
     }
-
 
     @Override
     public void generateOutputLine(String evaluation, int index) {

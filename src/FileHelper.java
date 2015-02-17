@@ -21,13 +21,13 @@ public class FileHelper implements Generator {
     private final String projectDir = System.getProperty("user.dir");
 
     /* Acts as symbol table in the compilation process :) */
-    private HashMap<String, Integer> variables = new HashMap<String, Integer>();
+    private HashMap<String, Long> variables = new HashMap<String, Long>();
     /* Arraylist of output lines for each input line */
     private ArrayList<String> outputLines = new ArrayList<String>();
 
     /* Class instatiations */
     private Parser parser = new Parser(outputLines);
-    private Computer comp = new Computer(variables, outputLines);
+    private Evaluator comp = new Evaluator(variables, outputLines);
 
     /* Pre output line label */
     private final String preOutputLine = "Line ";
@@ -84,10 +84,8 @@ public class FileHelper implements Generator {
      * @throws IOException
      */
     private void loadFile(String path) throws IOException{
-
         FileReader fr = new FileReader(path);
         input = new Scanner(fr);
-
     }
 
     /**
@@ -95,6 +93,7 @@ public class FileHelper implements Generator {
      */
     public void processCurrentFile () {
         setOutputFile(fileName);
+        System.out.println(fileName);
         for (int i = 0; input.hasNextLine(); i++) {
             String inputLine = input.nextLine();
             generateOutputLine(inputLine, i);
@@ -113,17 +112,29 @@ public class FileHelper implements Generator {
 
         for (int i = 0; i < outputLines.size(); i++) {
             String[] lines = outputLines.get(i).split("\n");
-            writeToOutputFile(lines);
-            gui.printOutputLines(lines);
-//            System.out.println(outputLines.get(i));
+            writeToOutputFile(lines); // write to output file
+            gui.printOutputLines(lines); // display to console screen
         }
 
+        writeVariablesToOutputFile(); // write variables to output file
+
         gui.printDoneProcessingRemarks(fileName);
-        outputLines.clear();
-        writeVariablesToOutputFile();
-        closeOutputFile();
+
+        outputLines.clear(); // reset for other input files
+
+        closeOutputFile(); // close output file writer
+
+        try {
+            loadFile(filePath);
+        } catch (IOException e){
+            System.out.println("Error: IO error");
+        }
     }
 
+    /**
+     * Setup before write to output file (i.e. filename, labels)
+     * @param fileName
+     */
     private void setOutputFile(String fileName) {
         try {
             fw = new FileWriter(fileName.replaceAll(".in", ".out"));
@@ -133,6 +144,10 @@ public class FileHelper implements Generator {
         }
     }
 
+    /**
+     * Write output lines to output file
+     * @param lines - output lines to write to output file
+     */
     private void writeToOutputFile(String[] lines){
         try {
             for (int i = 1; i < lines.length; i++) {
@@ -144,6 +159,9 @@ public class FileHelper implements Generator {
         }
     }
 
+    /**
+     * Write variables used and corresponding values to output file
+     */
     private void writeVariablesToOutputFile(){
         Iterator it = variables.entrySet().iterator();
         try {
@@ -158,6 +176,9 @@ public class FileHelper implements Generator {
         }
     }
 
+    /**
+     * Close FileWriter for output file
+     */
     private void closeOutputFile(){
         try {
             fw.close();

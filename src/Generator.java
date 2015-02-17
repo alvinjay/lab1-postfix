@@ -3,7 +3,7 @@
  */
 public interface Generator {
     /**
-     * Generates part of the outputlines for each input line
+     * Generates part of the output lines for each input line
      * One outline for each:
      *  -Given
      *  -Postfix

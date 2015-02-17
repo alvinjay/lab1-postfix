@@ -10,7 +10,7 @@ public class Constants {
     private HashMap<Character,Integer> OPERATORS_VALUES = new HashMap<Character, Integer>();
 
     public Constants() {
-        // assign weights to the operators
+        // assign weights to the operators (precendence)
         for (int i = 0; i < OPERATORS.length(); i++) {
             switch(OPERATORS.charAt(i)){
                 case '=': OPERATORS_VALUES.put(OPERATORS.charAt(i), 0);
@@ -29,10 +29,10 @@ public class Constants {
         }
     }
 
-    public String getOperators() {
-        return OPERATORS;
-    }
-
+    /**
+     * Retrieve operator precendences
+     * @return
+     */
     public HashMap<Character, Integer> getOperatorWeights() {
         return OPERATORS_VALUES;
     }
