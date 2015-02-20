@@ -4,3 +4,4 @@ var = 2 - var + c
 c1 = 1
 var = var - c1
 b = 0
+a = 12 * b

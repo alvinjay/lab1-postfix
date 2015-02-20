@@ -1,4 +1,4 @@
-package UI;/*
+package IMPORTS;/*
  * @(#)ExampleFileFilter.java	1.16 04/07/26
  */
 

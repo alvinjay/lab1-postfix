@@ -1,3 +1,7 @@
+/*
+    Programmers: Alvin Jay Cosare, Gabriel Lagmay, Raphael Tugasan
+    Exercise 1: Arithmetic Evaluation, Date Due: February 20, 2015
+*/
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -78,7 +82,7 @@ public class Evaluator implements Generator{
                             operand.push(op.moduloOp(operand).toString());
                             break;
                         case '=':
-                            Long answer = Long.parseLong(operand.pop().toString());
+                            Long answer = op.assignmentOp(operand);
                             variables.put(operand.peek().toString(), answer);
                             break;
                         default:

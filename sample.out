@@ -16,6 +16,10 @@ Result: var = 75
 Postfix: b 0 = 
 Result: b = 0
 
+Postfix: a 12 b * = 
+Result: a = 0
+
 b = 0
 c1 = 1
 var = 75
+a = 0

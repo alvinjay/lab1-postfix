@@ -1,3 +1,8 @@
+/*
+    Programmers: Alvin Jay Cosare, Gabriel Lagmay, Raphael Tugasan
+    Exercise 1: Arithmetic Evaluation, Date Due: February 20, 2015
+*/
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;

@@ -1,4 +1,8 @@
-import UI.*;
+/*
+    Programmers: Alvin Jay Cosare, Gabriel Lagmay, Raphael Tugasan
+    Exercise 1: Arithmetic Evaluation, Date Due: February 20, 2015
+*/
+import IMPORTS.*;
 
 import javax.swing.*;
 import java.io.File;
