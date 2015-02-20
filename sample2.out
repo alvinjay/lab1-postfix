@@ -1,8 +1,0 @@
-Postfix: a 2 = 
-Result: a = 2
-
-Postfix: c 1 = 
-Result: c = 1
-
-c = 1
-a = 2

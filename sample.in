@@ -1,6 +1,6 @@
-ar = 12 * 6 + 8 / 2
-ar = b + 2 - ar + c
+var = 12 * 6 + 8 / 2
+var = 2 - var + c
 3 * 3 % 3 - 2
-c = 1
-ar = ar - c * b
+c1 = 1
+var = var - c1
 b = 0

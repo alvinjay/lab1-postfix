@@ -9,6 +9,9 @@ import java.util.Stack;
  */
 public class Evaluator implements Generator{
 
+    /* Class Instantiation */
+    private Operations op = new Operations();
+
     /* Pre output line label */
     private final String preOutputLine = "Result: ";
 
@@ -60,34 +63,19 @@ public class Evaluator implements Generator{
                 try {
                     switch (popped.toString().charAt(0)) {
                         case '+':
-                            first = Long.parseLong(operand.pop().toString());
-                            second = Long.parseLong(operand.pop().toString());
-                            tempAnswer = second + first;
-                            operand.push(tempAnswer.toString());
+                            operand.push(op.additionOp(operand).toString());
                             break;
                         case '-':
-                            first = Long.parseLong(operand.pop().toString());
-                            second = Long.parseLong(operand.pop().toString());
-                            tempAnswer = second - first;
-                            operand.push(tempAnswer.toString());
+                            operand.push(op.subtractionOp(operand).toString());
                             break;
                         case '*':
-                            first = Long.parseLong(operand.pop().toString());
-                            second = Long.parseLong(operand.pop().toString());
-                            tempAnswer = second * first;
-                            operand.push(tempAnswer.toString());
+                            operand.push(op.multiplicationOp(operand).toString());
                             break;
                         case '/':
-                            first = Long.parseLong(operand.pop().toString());
-                            second = Long.parseLong(operand.pop().toString());
-                            tempAnswer = second / first;
-                            operand.push(tempAnswer.toString());
+                            operand.push(op.divisionOp(operand).toString());
                             break;
                         case '%':
-                            first = Long.parseLong(operand.pop().toString());
-                            second = Long.parseLong(operand.pop().toString());
-                            tempAnswer = second % first;
-                            operand.push(tempAnswer.toString());
+                            operand.push(op.moduloOp(operand).toString());
                             break;
                         case '=':
                             Long answer = Long.parseLong(operand.pop().toString());
